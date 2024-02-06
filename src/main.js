@@ -4,14 +4,14 @@ import ReactDOM from "react-dom";
 import App from './App';
 import { parseFragment, assertParam, handleError } from "./utils"
 
-export const ST_PETERSBURG_EVENT_NAME = 'org.github.st-petersburg';
-export const ST_PETERSBURG_AUTH_ROOMID = "!sPOhwuPhvxpPgNufTt:matrix.org";
+export const CLEVER_EVENT_NAME = 'org.github.clever';
+export const CLEVER_AUTH_ROOMID = "!sPOhwuPhvxpPgNufTt:matrix.org";
 
-export const ST_PETERSBURG_AUTH_PUBLIC_ROOMID = "#st-petersburg-auth:matrix.org";
-export const ST_PETERSBURG_AUTH_PUBLIC_LINK = "https://matrix.to/#/#st-petersburg-auth:matrix.org";
+export const CLEVER_AUTH_PUBLIC_ROOMID = "#st-petersburg-auth:matrix.org";
+export const CLEVER_AUTH_PUBLIC_LINK = "https://matrix.to/#/#st-petersburg-auth:matrix.org";
 
-export const ST_PETERSBURG_AUTH_PERMISSIONTOKEN = "permissionToken";
-export const ST_PETERSBURG_AUTH_CONTENT_KEY = "ICanReadThisSoIAmInTheRoom"
+export const CLEVER_AUTH_PERMISSIONTOKEN = "permissionToken";
+export const CLEVER_AUTH_CONTENT_KEY = "ICanReadThisSoIAmInTheRoom"
 
 let widgetId;
 let api;
@@ -31,10 +31,10 @@ api.requestCapabilityToReceiveState("m.room.member");
 api.requestCapabilityToReceiveEvent("m.room.message");
 api.requestCapabilityToSendEvent("m.room.message");
 
-api.requestCapabilityToSendState(ST_PETERSBURG_EVENT_NAME);
-api.requestCapabilityToReceiveState(ST_PETERSBURG_EVENT_NAME);
+api.requestCapabilityToSendState(CLEVER_EVENT_NAME);
+api.requestCapabilityToReceiveState(CLEVER_EVENT_NAME);
 
-api.requestCapabilityForRoomTimeline(ST_PETERSBURG_AUTH_ROOMID);
+api.requestCapabilityForRoomTimeline(CLEVER_AUTH_ROOMID);
 
 // Add custom action handlers (if needed)
 // api.on(`action:${WidgetApiToWidgetAction.UpdateVisibility}`, (ev: CustomEvent<IVisibilityActionRequest>) => {
@@ -63,14 +63,14 @@ api.requestCapabilityForRoomTimeline(ST_PETERSBURG_AUTH_ROOMID);
 export function tryAuthentication() {
     console.log("try to autheticate")
     api.readStateEvents(
-        ST_PETERSBURG_EVENT_NAME,
+        CLEVER_EVENT_NAME,
         25,
-        ST_PETERSBURG_AUTH_PERMISSIONTOKEN,
-        [ST_PETERSBURG_AUTH_ROOMID],
+        CLEVER_AUTH_PERMISSIONTOKEN,
+        [CLEVER_AUTH_ROOMID],
     ).then((events) => {
         if (events.length > 0) {
-            if (events[0].content[ST_PETERSBURG_AUTH_CONTENT_KEY]) {
-                console.log("Seems like the user is part of the #st-petersburg-auth:matrix.org room and can play")
+            if (events[0].content[CLEVER_AUTH_CONTENT_KEY]) {
+                console.log("Seems like the user is part of the #clever-auth:matrix.org room and can play")
                 onAuthenticated();
             }
         }
@@ -86,7 +86,7 @@ function onAuthenticated() {
 
 api.on("ready", function () {
     document.getElementById("tryAuthenticationButton").onclick = tryAuthentication
-    document.getElementById("roomLinkP").innerHTML = "<b>"+ST_PETERSBURG_AUTH_PUBLIC_ROOMID+"</b>";
+    document.getElementById("roomLinkP").innerHTML = "<b>"+CLEVER_AUTH_PUBLIC_ROOMID+"</b>";
     tryAuthentication();
 });
 
